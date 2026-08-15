@@ -57,8 +57,8 @@
   <section class="quote"><img loading="lazy" src="images/IMG_5425.webp" alt="Monochrome artwork with an embracing couple and handwritten poem"><blockquote>“Common be our joy.<br>Common be our sorrow.<br>Common be our dream.<br>Common be our longing.”<cite>Inscription from an archive work · 1990</cite></blockquote></section>
 
   <section class="archive" id="archive">
-    <div class="archive-top reveal"><h2>The archive</h2><p>Every photograph from the studio collection—finished works, close details and the environments in which the pieces live. Select a series to explore.</p></div>
-    <div class="filters" role="group" aria-label="Filter archive"><button class="filter active" data-filter="all">All · 106</button></div>
+    <div class="archive-top reveal"><h2>The archive</h2><p>A curated selection from the studio collection—each work shown through its strongest full view, detail, or setting. Select a series to explore.</p></div>
+    <div class="filters" role="group" aria-label="Filter archive"><button class="filter active" data-filter="all">All</button></div>
     <div class="gallery" id="gallery" aria-live="polite"></div>
   </section>
 
@@ -71,19 +71,21 @@
 const menu=document.querySelector('.menu'), navlinks=document.querySelector('.navlinks');menu.addEventListener('click',()=>{const open=navlinks.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));menu.textContent=open?'Close':'Menu'});navlinks.addEventListener('click',()=>{navlinks.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.textContent='Menu'});
 const series = [
   {id:'horizons',name:'Horizons',title:'Seascape & Horses',files:[5338,5339,5342,5343]},
-  {id:'veil',name:'The Veiled Gaze',title:'Veiled Woman',files:[5378,5379,5380,5383,5384,5385,5386,5387,5388,5449,5450,5451,5452,5453,5473,5474]},
-  {id:'solitary',name:'Solitary Tree',title:'Solitary Tree',files:[5389,5390,5391,5392,5393,5394,5395,5396,5397,5398,5437,5438,5439,5440,5441,5470]},
-  {id:'diptych',name:'Two Skies',title:'Tree Diptych',files:[5400,5401,5402,5403,5404,5405,5406,5433,5434,5435,5436,5472]},
-  {id:'circle',name:'Circle & Figure',title:'Held in the Circle',files:[5407,5408,5409,5410,5411,5428,5429,5430,5431,5432,5466,5467,5468,5476]},
-  {id:'common',name:'Common Ground',title:'Common Be Our Joy',files:[5412,5413,5414,5424,5425,5426,5427,5458,5459,5462,5463,5464,5465]},
-  {id:'field',name:'Colour Field',title:'What the Eye Keeps',files:[5415,5416,5417,5418,5419,5420,5421,5422,5423,5475]},
-  {id:'survivors',name:'Survivors',title:'Survivors',files:[5442,5443,5444,5445,5446,5447,5448,5454,5455,5456,5457]},
-  {id:'profile',name:'Profiles',title:'Woman in Profile',files:[5478,5479,5486,5487]},
-  {id:'studio',name:'Studio Studies',title:'Miniatures & Studio',files:[5480,5481,5482,5483,5484,5485]}
+  {id:'veil',name:'The Veiled Gaze',title:'Veiled Woman',files:[5378,5385,5388,5474]},
+  {id:'solitary',name:'Solitary Tree',title:'Solitary Tree',files:[5391,5395,5437,5438,5470]},
+  {id:'diptych',name:'Two Skies',title:'Tree Diptych',files:[5401,5402,5436,5472]},
+  {id:'circle',name:'Circle & Figure',title:'Held in the Circle',files:[5407,5411,5428,5468]},
+  {id:'common',name:'Common Ground',title:'Common Be Our Joy',files:[5413,5427,5464,5465]},
+  {id:'field',name:'Colour Field',title:'What the Eye Keeps',files:[5417,5420,5423,5475]},
+  {id:'survivors',name:'Survivors',title:'Survivors',files:[5442,5447,5454,5457]},
+  {id:'profile',name:'Woman in Profile',title:'Woman in Profile',files:[5478,5479]},
+  {id:'golden',name:'Golden Portrait',title:'Golden Portrait',files:[5486]},
+  {id:'studio',name:'Studio Studies',title:'Miniatures & Studio',files:[5483,5484]}
 ];
 const filters=document.querySelector('.filters'), gallery=document.querySelector('#gallery');
 const all=[];
 series.forEach(s=>{const b=document.createElement('button');b.className='filter';b.dataset.filter=s.id;b.textContent=`${s.name} · ${s.files.length}`;filters.appendChild(b);s.files.forEach((n,i)=>all.push({src:`images/IMG_${n}.webp`,series:s.id,label:s.title,index:i+1,file:`IMG_${n}`}))});
+filters.querySelector('[data-filter="all"]').textContent=`All · ${all.length}`;
 all.forEach((item,i)=>{const b=document.createElement('button');b.className='tile';b.dataset.series=item.series;b.dataset.label=item.label;b.dataset.index=i;b.setAttribute('aria-label',`Open ${item.label}, view ${item.index}`);const im=document.createElement('img');im.src=item.src;im.alt=`${item.label}, view ${item.index}`;im.loading=i<8?'eager':'lazy';im.decoding='async';b.appendChild(im);gallery.appendChild(b)});
 filters.addEventListener('click',e=>{const b=e.target.closest('.filter');if(!b)return;document.querySelectorAll('.filter').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.tile').forEach(t=>t.hidden=b.dataset.filter!=='all'&&t.dataset.series!==b.dataset.filter)});
 const lb=document.querySelector('#lightbox'),lbImg=lb.querySelector('img'),cap=lb.querySelector('.lb-caption');let current=0;function visible(){return [...document.querySelectorAll('.tile:not([hidden])')]}function openLb(tile){const arr=visible();current=arr.indexOf(tile);show(arr)}function show(arr){const tile=arr[current],item=all[+tile.dataset.index];lbImg.src=item.src;lbImg.alt=item.label;cap.textContent=`${item.label} · ${item.file}`;lb.classList.add('open');document.body.style.overflow='hidden';lb.querySelector('.lb-close').focus()}function move(dir){const arr=visible();current=(current+dir+arr.length)%arr.length;show(arr)}gallery.addEventListener('click',e=>{const t=e.target.closest('.tile');if(t)openLb(t)});lb.querySelector('.lb-close').onclick=()=>{lb.classList.remove('open');document.body.style.overflow=''};lb.querySelector('.lb-prev').onclick=()=>move(-1);lb.querySelector('.lb-next').onclick=()=>move(1);lb.addEventListener('click',e=>{if(e.target===lb){lb.classList.remove('open');document.body.style.overflow=''}});addEventListener('keydown',e=>{if(!lb.classList.contains('open'))return;if(e.key==='Escape')lb.querySelector('.lb-close').click();if(e.key==='ArrowRight')move(1);if(e.key==='ArrowLeft')move(-1)});

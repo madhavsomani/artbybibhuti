@@ -1,6 +1,6 @@
 # Bibhuti Bhusan Mohapatra — Artist Portfolio
 
-A responsive, single-page artist portfolio built from the 106 photographs supplied in the `ArtbyBibhuti` Google Drive folder.
+A responsive, single-page artist portfolio built from the 106 photographs supplied in the `ArtbyBibhuti` Google Drive folder. The public archive is intentionally curated to 38 non-redundant views.
 
 ## Preview
 
@@ -14,7 +14,7 @@ Open http://localhost:8080.
 ## Structure
 
 - `site/index.html` — complete responsive site
-- `site/images/` — optimized WebP versions of the 106 source HEIC photographs
+- `site/images/` — optimized WebP versions of the 106 source HEIC photographs (38 curated views appear in the public archive)
 - `site/staticwebapp.config.json` — Azure Static Web Apps routing/security headers
 - `source/` — original Drive download (not required for deployment)
 - `analysis/` — contact sheets and signature inspection images (not required for deployment)
